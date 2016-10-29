@@ -16,6 +16,21 @@ namespace MSSqlDataSource
             Reset();
         }
 
+        public NullableContent (Content record)
+        {
+            Reset();
+            if (record != null)
+            {
+                if (record.ContentValue.HasValue)
+                {
+                    ContentValue = record.ContentValue.Value;
+                }
+                HierachyId = record.Hierarchy;
+                Id = record.Id;
+                Name = record.Name;
+            }
+        }
+
         private void Reset()
         {
             Id = null;
@@ -77,36 +92,16 @@ namespace MSSqlDataSource
             {
                 foreach (var record in records)
                 {
-                    var resultRecord = CovertToNullableContent(record);
-                    if (resultRecord != null)
+                    var resultRecord = new NullableContent(record);
+                    if (result == null)
                     {
-                        if (result == null)
-                        {
-                            result = new List<NullableContent>();
-                        }
-                        result.Add(resultRecord);
+                        result = new List<NullableContent>();
                     }
+                    result.Add(resultRecord);
                 }
             }
 
             return result;
-        }
-
-        private static NullableContent CovertToNullableContent(Content record)
-        {
-            NullableContent resultRecord = null;
-            if (record != null)
-            {
-                resultRecord = new NullableContent();
-                if (record.ContentValue.HasValue)
-                {
-                    resultRecord.ContentValue = record.ContentValue.Value;
-                }
-                resultRecord.HierachyId = record.Hierarchy;
-                resultRecord.Id = record.Id;
-                resultRecord.Name = record.Name;
-            }
-            return resultRecord;
         }
 
         public NullableContent Set()
@@ -208,7 +203,7 @@ namespace MSSqlDataSource
                 dataSource.InsertOnSubmit(record);
                 dataSource.Context?.SubmitChanges();
             }
-            var result = CovertToNullableContent(record);
+            var result = new NullableContent(record);
 
             return result;
         }

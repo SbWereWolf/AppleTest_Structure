@@ -17,12 +17,16 @@ namespace WinFormsInterface
 
         private void AddToolStripButton_Click(object sender, EventArgs e)
         {
-            InterfaceHandler.AddRecord();
+            var viewForm = new ContentView(null);
+            viewForm.Show();
         }
 
         private void EditToolStripButton_Click(object sender, EventArgs e)
         {
-            InterfaceHandler.EditRecord(RecordsDataGridView);
+            var contentRecord = InterfaceHandler.GetGridContentRecord(RecordsDataGridView);
+
+            var viewForm = new ContentView(contentRecord);
+            viewForm.Show();
         }
 
         private void DeleteToolStripButton_Click(object sender, EventArgs e)

@@ -113,7 +113,7 @@ namespace MSSqlDataSource
 			OnCreated();
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public long Id
 		{
 			get
@@ -133,7 +133,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX)")]
+		[Column(Storage="_Name", DbType="NVarChar(MAX)")]
 		public string Name
 		{
 			get
@@ -153,7 +153,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Parent", DbType="BigInt")]
+		[Column(Storage="_Parent", DbType="BigInt")]
 		public Nullable<long> Parent
 		{
 			get
@@ -173,7 +173,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.AssociationAttribute(Name="Hierarchy_Content", Storage="_Contents", ThisKey="Id", OtherKey="Hierarchy")]
+		[Association(Name="Hierarchy_Content", Storage="_Contents", ThisKey="Id", OtherKey="Hierarchy")]
 		public EntitySet<Content> ContentsAssociation
 		{
 			get
@@ -255,7 +255,7 @@ namespace MSSqlDataSource
 			OnCreated();
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[Column(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public long Id
 		{
 			get
@@ -275,7 +275,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX)")]
+		[Column(Storage="_Name", DbType="NVarChar(MAX)")]
 		public string Name
 		{
 			get
@@ -295,7 +295,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Name="Content", Storage="_ContentValue", DbType="Real")]
+		[Column(Name="Content", Storage="_ContentValue", DbType="Real")]
 		public Nullable<float> ContentValue
 		{
 			get
@@ -315,7 +315,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hierarchy", DbType="BigInt NOT NULL")]
+		[Column(Storage="_Hierarchy", DbType="BigInt NOT NULL")]
 		public long Hierarchy
 		{
 			get
@@ -339,7 +339,7 @@ namespace MSSqlDataSource
 			}
 		}
 		
-		[System.Data.Linq.Mapping.AssociationAttribute(Name="Hierarchy_Content", Storage="_Hierarchy1", ThisKey="Hierarchy", OtherKey="Id", IsForeignKey=true)]
+		[Association(Name="Hierarchy_Content", Storage="_Hierarchy1", ThisKey="Hierarchy", OtherKey="Id", IsForeignKey=true)]
 		public Hierarchy HierarchyAssociation
 		{
 			get
