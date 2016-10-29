@@ -52,13 +52,7 @@ namespace WinFormsInterface
             }
         }
 
-        public static void AddRecord()
-        {
-            var viewForm = new ContentView(null);
-            viewForm.Show();
-        }
-
-        private static Content.Record GetGridContentRecord( DataGridView dataGridView)
+        public static Content.Record GetGridContentRecord( DataGridView dataGridView)
         {
             var selectedCellCount = dataGridView?.SelectedCells.Count;
 
@@ -120,13 +114,6 @@ namespace WinFormsInterface
                 conternRecord.ContentValue = contentValue;
             }
             return conternRecord;
-        }
-        public static void EditRecord(DataGridView dataGridView)
-        {
-            var contentRecord = GetGridContentRecord(dataGridView);
-
-            var viewForm = new ContentView(contentRecord);
-            viewForm.Show();
         }
 
         public static void DeleteRecord(DataGridView recordsDataGridView)
