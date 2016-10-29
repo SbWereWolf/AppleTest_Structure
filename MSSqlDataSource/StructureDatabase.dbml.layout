@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="StructureDatabase">
+  <DataContextMoniker Name="/StructureDatabaseDataContext" />
+  <nestedChildShapes>
+    <classShape Id="16f6b978-64c7-4da6-971f-5e2e266a4ec1" absoluteBounds="5.875, 2.125, 2, 1.3862939453125">
+      <DataClassMoniker Name="/StructureDatabaseDataContext/Hierarchy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ac9e4320-2213-4974-875c-3a49d3f05752" absoluteBounds="5.89, 2.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9e2b9a56-5177-4b4f-8474-e0a883a959b5" absoluteBounds="8.75, 2.125, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/StructureDatabaseDataContext/Content" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f8b856d-1be2-4229-8726-c359ca0aa88d" absoluteBounds="8.765, 2.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.875 : 2.81814697265625); (8.75 : 2.81814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/StructureDatabaseDataContext/Hierarchy/Hierarchy_Content" />
+      <nodes>
+        <classShapeMoniker Id="16f6b978-64c7-4da6-971f-5e2e266a4ec1" />
+        <classShapeMoniker Id="9e2b9a56-5177-4b4f-8474-e0a883a959b5" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AppleStructure" Class="StructureDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=FORGE-JITA\SQLEXPRESS2016;Initial Catalog=AppleStructure;Integrated Security=True" SettingsObjectName="MSSqlDataSource.Properties.Settings" SettingsPropertyName="AppleStructureConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Hierarchy" Member="Hierarchies">
+    <Type Name="Hierarchy">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Parent" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="Hierarchy_Content" Member="ContentValuesAssociation" Storage="_ContentValues" ThisKey="Id" OtherKey="Hierarchy" Type="ContentValue" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Content" Member="ContentValues">
+    <Type Name="Content">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Content" Member="ContentValueValue" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="Hierarchy" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="Hierarchy_Content" Member="HierarchyAssociation" Storage="_Hierarchy1" ThisKey="Hierarchy" OtherKey="Id" Type="Hierarchy" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
