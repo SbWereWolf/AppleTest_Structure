@@ -103,7 +103,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -116,14 +118,6 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{f9a98d2e-776e-41e9-a3d3-258586e08cff}</Project>
       <Name>BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{28636EC7-5468-4511-B13A-CF114FF2FCE9}</Project>
-      <Name>DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSSqlDataSource\MSSqlDataSource.csproj">
-      <Project>{10192DC9-425D-44A8-91C2-EA29F5BE8614}</Project>
-      <Name>MSSqlDataSource</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
