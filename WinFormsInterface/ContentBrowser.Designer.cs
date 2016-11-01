@@ -48,6 +48,7 @@ namespace WinFormsInterface
             this.DeleteToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.BasisSplitContainer = new System.Windows.Forms.SplitContainer();
             this.HierarchyToolStripContainer = new System.Windows.Forms.ToolStripContainer();
+            this.HierarchyTreeView = new System.Windows.Forms.TreeView();
             this.HierarchyToolStrip = new System.Windows.Forms.ToolStrip();
             this.RefreshHierarchyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,7 +62,7 @@ namespace WinFormsInterface
             this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
-            this.HierarchyTreeView = new System.Windows.Forms.TreeView();
+            this.MoveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.ContentToolStripContainer.ContentPanel.SuspendLayout();
             this.ContentToolStripContainer.TopToolStripPanel.SuspendLayout();
             this.ContentToolStripContainer.SuspendLayout();
@@ -82,11 +83,11 @@ namespace WinFormsInterface
             // ContentToolStripContainer.ContentPanel
             // 
             this.ContentToolStripContainer.ContentPanel.Controls.Add(this.RecordsDataGridView);
-            this.ContentToolStripContainer.ContentPanel.Size = new System.Drawing.Size(531, 521);
+            this.ContentToolStripContainer.ContentPanel.Size = new System.Drawing.Size(484, 521);
             this.ContentToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentToolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.ContentToolStripContainer.Name = "ContentToolStripContainer";
-            this.ContentToolStripContainer.Size = new System.Drawing.Size(531, 548);
+            this.ContentToolStripContainer.Size = new System.Drawing.Size(484, 548);
             this.ContentToolStripContainer.TabIndex = 0;
             this.ContentToolStripContainer.Text = "ContentToolStripContainer";
             // 
@@ -105,7 +106,7 @@ namespace WinFormsInterface
             this.RecordsDataGridView.Name = "RecordsDataGridView";
             this.RecordsDataGridView.ReadOnly = true;
             this.RecordsDataGridView.RowTemplate.Height = 24;
-            this.RecordsDataGridView.Size = new System.Drawing.Size(531, 521);
+            this.RecordsDataGridView.Size = new System.Drawing.Size(484, 521);
             this.RecordsDataGridView.TabIndex = 0;
             // 
             // ContentToolStrip
@@ -222,7 +223,7 @@ namespace WinFormsInterface
             // 
             this.BasisSplitContainer.Panel2.Controls.Add(this.ContentToolStripContainer);
             this.BasisSplitContainer.Size = new System.Drawing.Size(777, 548);
-            this.BasisSplitContainer.SplitterDistance = 242;
+            this.BasisSplitContainer.SplitterDistance = 289;
             this.BasisSplitContainer.TabIndex = 1;
             // 
             // HierarchyToolStripContainer
@@ -231,17 +232,26 @@ namespace WinFormsInterface
             // HierarchyToolStripContainer.ContentPanel
             // 
             this.HierarchyToolStripContainer.ContentPanel.Controls.Add(this.HierarchyTreeView);
-            this.HierarchyToolStripContainer.ContentPanel.Size = new System.Drawing.Size(242, 521);
+            this.HierarchyToolStripContainer.ContentPanel.Size = new System.Drawing.Size(289, 521);
             this.HierarchyToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.HierarchyToolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.HierarchyToolStripContainer.Name = "HierarchyToolStripContainer";
-            this.HierarchyToolStripContainer.Size = new System.Drawing.Size(242, 548);
+            this.HierarchyToolStripContainer.Size = new System.Drawing.Size(289, 548);
             this.HierarchyToolStripContainer.TabIndex = 1;
             this.HierarchyToolStripContainer.Text = "HierarchyToolStripContainer";
             // 
             // HierarchyToolStripContainer.TopToolStripPanel
             // 
             this.HierarchyToolStripContainer.TopToolStripPanel.Controls.Add(this.HierarchyToolStrip);
+            // 
+            // HierarchyTreeView
+            // 
+            this.HierarchyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HierarchyTreeView.Location = new System.Drawing.Point(0, 0);
+            this.HierarchyTreeView.Name = "HierarchyTreeView";
+            this.HierarchyTreeView.Size = new System.Drawing.Size(289, 521);
+            this.HierarchyTreeView.TabIndex = 0;
+            this.HierarchyTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.HierarchyTreeView_AfterSelect);
             // 
             // HierarchyToolStrip
             // 
@@ -254,10 +264,11 @@ namespace WinFormsInterface
             this.toolStripSeparator5,
             this.EditHierarchytoolStripButton,
             this.toolStripSeparator6,
-            this.DeleteHierarchyToolStripButton});
+            this.DeleteHierarchyToolStripButton,
+            this.MoveToolStripButton});
             this.HierarchyToolStrip.Location = new System.Drawing.Point(3, 0);
             this.HierarchyToolStrip.Name = "HierarchyToolStrip";
-            this.HierarchyToolStrip.Size = new System.Drawing.Size(165, 27);
+            this.HierarchyToolStrip.Size = new System.Drawing.Size(189, 27);
             this.HierarchyToolStrip.TabIndex = 0;
             // 
             // RefreshHierarchyToolStripButton
@@ -268,6 +279,7 @@ namespace WinFormsInterface
             this.RefreshHierarchyToolStripButton.Name = "RefreshHierarchyToolStripButton";
             this.RefreshHierarchyToolStripButton.Size = new System.Drawing.Size(24, 24);
             this.RefreshHierarchyToolStripButton.Text = "Refresh";
+            this.RefreshHierarchyToolStripButton.Click += new System.EventHandler(this.RefreshHierarchyToolStripButton_Click);
             // 
             // toolStripSeparator4
             // 
@@ -282,6 +294,7 @@ namespace WinFormsInterface
             this.AddHierarchyToolStripButton.Name = "AddHierarchyToolStripButton";
             this.AddHierarchyToolStripButton.Size = new System.Drawing.Size(24, 24);
             this.AddHierarchyToolStripButton.Text = "Add";
+            this.AddHierarchyToolStripButton.Click += new System.EventHandler(this.AddHierarchyToolStripButton_Click);
             // 
             // toolStripSeparator5
             // 
@@ -296,6 +309,7 @@ namespace WinFormsInterface
             this.EditHierarchytoolStripButton.Name = "EditHierarchytoolStripButton";
             this.EditHierarchytoolStripButton.Size = new System.Drawing.Size(24, 24);
             this.EditHierarchytoolStripButton.Text = "Edit";
+            this.EditHierarchytoolStripButton.Click += new System.EventHandler(this.EditHierarchytoolStripButton_Click);
             // 
             // toolStripSeparator6
             // 
@@ -310,6 +324,7 @@ namespace WinFormsInterface
             this.DeleteHierarchyToolStripButton.Name = "DeleteHierarchyToolStripButton";
             this.DeleteHierarchyToolStripButton.Size = new System.Drawing.Size(24, 24);
             this.DeleteHierarchyToolStripButton.Text = "Delete";
+            this.DeleteHierarchyToolStripButton.Click += new System.EventHandler(this.DeleteHierarchyToolStripButton_Click);
             // 
             // BottomToolStripPanel
             // 
@@ -347,13 +362,15 @@ namespace WinFormsInterface
             // 
             this.ContentPanel.Size = new System.Drawing.Size(160, 521);
             // 
-            // HierarchyTreeView
+            // MoveToolStripButton
             // 
-            this.HierarchyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HierarchyTreeView.Location = new System.Drawing.Point(0, 0);
-            this.HierarchyTreeView.Name = "HierarchyTreeView";
-            this.HierarchyTreeView.Size = new System.Drawing.Size(242, 521);
-            this.HierarchyTreeView.TabIndex = 0;
+            this.MoveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.MoveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("MoveToolStripButton.Image")));
+            this.MoveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.MoveToolStripButton.Name = "MoveToolStripButton";
+            this.MoveToolStripButton.Size = new System.Drawing.Size(24, 24);
+            this.MoveToolStripButton.Text = "Move";
+            this.MoveToolStripButton.Click += new System.EventHandler(this.MoveToolStripButton_Click);
             // 
             // ContentBrowser
             // 
@@ -417,6 +434,7 @@ namespace WinFormsInterface
         private ToolStripPanel RightToolStripPanel;
         private ToolStripPanel LeftToolStripPanel;
         private ToolStripContentPanel ContentPanel;
+        private ToolStripButton MoveToolStripButton;
     }
 }
 

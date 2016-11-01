@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HierarchyHandler.cs" />
     <Compile Include="ContentHandler.cs" />
     <Compile Include="DataSource.cs" />
+    <Compile Include="NullableHierarchy.cs" />
+    <Compile Include="NullableContent.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

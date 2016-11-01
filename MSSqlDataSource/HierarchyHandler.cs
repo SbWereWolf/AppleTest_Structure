@@ -4,35 +4,35 @@ using System.Linq;
 
 namespace MSSqlDataSource
 {
-    public class ContentHandler : DataSource
+    public class HierarchyHandler : DataSource
     {
-        private Table<Content> DataSource { get; }
-        public NullableContent SearchPattern { get; }
-        public NullableContent Fields { private get; set; }
+        private Table<Hierarchy> DataSource { get; }
+        public NullableHierarchy SearchPattern { get; }
+        public NullableHierarchy Fields { private get; set; }
 
-        public ContentHandler()
+        public HierarchyHandler()
         {
             var appleStructure = DbContext;
             if (appleStructure != null)
             {
-                DataSource = appleStructure.Contents;
+                DataSource = appleStructure.Hierarchies;
             }
-            SearchPattern = new NullableContent();
-            Fields = new NullableContent();
+            SearchPattern = new NullableHierarchy();
+            Fields = new NullableHierarchy();
         }
 
-        public List<NullableContent> Get()
+        public List<NullableHierarchy> Get()
         {
-            IQueryable<Content> records = DataSource;
+            IQueryable<Hierarchy> records = DataSource;
             var pattern = SearchPattern;
 
             if (records != null
                 && pattern != null )
             {
-                var hierachyId = pattern.HierachyId;
-                if (hierachyId.HasValue)
+                var parent = pattern.Parent;
+                if (parent.HasValue)
                 {
-                    records = records.Where(x=>x.Hierarchy == hierachyId.Value);
+                    records = records.Where(x=>x.Parent == parent.Value);
                 }
                 var id = pattern.Id;
                 if (id.HasValue)
@@ -44,22 +44,17 @@ namespace MSSqlDataSource
                 {
                     records = records.Where(x => x.Name.Contains(name));
                 }
-                var content = pattern.ContentValue;
-                if (content.HasValue)
-                {
-                    records = records.Where(x => x.ContentValue == content.Value);
-                }
             }
 
-            List<NullableContent> result = null;
+            List<NullableHierarchy> result = null;
             if (records != null)
             {
                 foreach (var record in records)
                 {
-                    var resultRecord = new NullableContent(record);
+                    var resultRecord = new NullableHierarchy(record);
                     if (result == null)
                     {
-                        result = new List<NullableContent>();
+                        result = new List<NullableHierarchy>();
                     }
                     result.Add(resultRecord);
                 }
@@ -68,11 +63,11 @@ namespace MSSqlDataSource
             return result;
         }
 
-        public NullableContent Set()
+        public NullableHierarchy Set()
         {
             var fileds = Fields;
 
-            Content record = null;
+            Hierarchy record = null;
             if (fileds?.Id != null)
             {
                 record = DataSource?.First(x => x.Id == fileds.Id.Value);
@@ -81,11 +76,10 @@ namespace MSSqlDataSource
             var perform = false;
             if (record != null)
             {
-                if (fileds.HierachyId.HasValue)
+                if (fileds.Parent.HasValue)
                 {
-                    record.Hierarchy = fileds.HierachyId.Value;
+                    record.Parent = fileds.Parent.Value;
                 }
-                record.ContentValue = fileds.ContentValue;
                 record.Name = fileds.Name;
 
                 perform = true;
@@ -98,14 +92,13 @@ namespace MSSqlDataSource
                 isSuccess = true;
             }
 
-            NullableContent result = null;
+            NullableHierarchy result = null;
             if (isSuccess)
             {
-                result = new NullableContent
+                result = new NullableHierarchy
                 {
                     Id = record.Id,
-                    ContentValue = record.ContentValue,
-                    HierachyId = record.Hierarchy,
+                    Parent = record.Parent,
                     Name = record.Name
                 };
             }
@@ -118,12 +111,12 @@ namespace MSSqlDataSource
             var result = false;
             var fields = Fields;
 
-            Content record = null;
+            Hierarchy record = null;
             DataContext context = null;
             if (fields?.Id != null
                 && DataSource!= null)
             {
-                record = DataSource.First(x => x.Id == fields.Id.Value);
+                record = DataSource.FirstOrDefault(x => x.Id == fields.Id.Value);
                 context = DataSource.Context;
             }
             if (record != null && context != null )
@@ -136,20 +129,19 @@ namespace MSSqlDataSource
             return result;
         }
 
-        public NullableContent Add()
+        public NullableHierarchy Add()
         {
-            Content record = null;
+            Hierarchy record = null;
 
             var dataSource = DataSource;
             var fields = Fields;
             if ( dataSource != null && fields != null)
             {
-                record = new Content();
+                record = new Hierarchy();
             }
 
             if (record != null )
             {
-                record.ContentValue = fields.ContentValue;
                 record.Name = fields.Name;
             }
             if ( record != null && fields.Id != null)
@@ -157,9 +149,9 @@ namespace MSSqlDataSource
                 record.Id = fields.Id.Value;
             }
 
-            if (fields?.HierachyId != null && record != null)
+            if (fields?.Parent != null && record != null)
             {
-                record.Hierarchy = fields.HierachyId.Value;
+                record.Parent = fields.Parent.Value;
             }
 
             if (record != null )
@@ -167,7 +159,7 @@ namespace MSSqlDataSource
                 dataSource.InsertOnSubmit(record);
                 dataSource.Context?.SubmitChanges();
             }
-            var result = new NullableContent(record);
+            var result = new NullableHierarchy(record);
 
             return result;
         }

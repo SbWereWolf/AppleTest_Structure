@@ -39,7 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hierarchy.cs" />
     <Compile Include="Content.cs" />
+    <Compile Include="HierarchyEntity.cs" />
+    <Compile Include="ContentEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
