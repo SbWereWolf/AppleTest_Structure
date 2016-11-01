@@ -31,7 +31,7 @@ namespace WinFormsInterface
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HierarchyView));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(HierarchyView));
             this.NameGroupBox = new System.Windows.Forms.GroupBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();
             this.CommandsToolStripContainer = new System.Windows.Forms.ToolStripContainer();

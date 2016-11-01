@@ -49,7 +49,10 @@ namespace WinFormsInterface
 
             if (isSetSuccess)
             {
-                form?.Close();
+                if (form != null)
+                {
+                    form.Close();
+                }
             }
             else
             {
@@ -59,7 +62,12 @@ namespace WinFormsInterface
 
         public static ContentEntity GetGridContentRecord( DataGridView dataGridView)
         {
-            var selectedCellCount = dataGridView?.SelectedCells.Count;
+            int? selectedCellCount = null;
+            if (dataGridView != null )
+            {
+                selectedCellCount = dataGridView.SelectedCells.Count;
+            }
+            
 
             DataGridViewCell cellId = null;
             DataGridViewCell cellHierachyId = null;
@@ -68,7 +76,11 @@ namespace WinFormsInterface
             if (selectedCellCount > 0)
             {
                 var cell = dataGridView.SelectedCells[0];
-                var selectedRow = cell?.OwningRow;
+                DataGridViewRow selectedRow = null;
+                if (cell != null )
+                {
+                    selectedRow = cell.OwningRow;
+                }
                 if (selectedRow != null)
                 {
                     cellId = selectedRow.Cells["Id"];
@@ -78,24 +90,39 @@ namespace WinFormsInterface
                 }
             }
             var contentIdString = string.Empty;
-            if (cellId?.Value != null)
+            if (cellId != null )
+            {
+             if (cellId.Value != null)
             {
                 contentIdString = cellId.Value.ToString();
+            }               
             }
+
             var hierachyIdString = string.Empty;
-            if (cellHierachyId?.Value != null)
+            if (cellHierachyId != null )
+            {
+            if (cellHierachyId.Value != null)
             {
                 hierachyIdString = cellHierachyId.Value.ToString();
+            }                
             }
+
             var name = string.Empty;
-            if (cellName?.Value != null)
+            if (cellName != null )
+            {
+            if (cellName.Value != null)
             {
                 name = cellName.Value.ToString();
+            }                
             }
+
             var contentValueString = string.Empty;
-            if (cellContentValue?.Value != null)
+            if (cellContentValue != null)
             {
-                contentValueString = cellContentValue.Value.ToString();
+                if (cellContentValue.Value != null)
+                {
+                    contentValueString = cellContentValue.Value.ToString();
+                }
             }
 
             var conternRecord = new ContentEntity { Name = name };
@@ -144,8 +171,7 @@ namespace WinFormsInterface
                     const string cParent = "PARENT";
                     const string cName = "NAME";
                     var getHierarchyStructure = connection.CreateCommand();
-                    getHierarchyStructure.CommandText =
-                        $@"
+                    getHierarchyStructure.CommandText =string.Format(@"
 WITH HierarchyCTE (Id, Name, Parent, LEVEL)
 AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 0
 FROM Hierarchy HRoot
@@ -155,10 +181,10 @@ SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1
 FROM Hierarchy HChild
 INNER JOIN HierarchyCTE CTE ON HChild.Parent = CTE.Id
 WHERE HChild.Parent IS NOT NULL)
-SELECT HierarchyCTE.Id AS {cId}, HierarchyCTE.Parent AS {cParent} , HierarchyCTE.Name AS {cName} 
+SELECT HierarchyCTE.Id AS {0}, HierarchyCTE.Parent AS {1} , HierarchyCTE.Name AS {2} 
 FROM HierarchyCTE
 ORDER BY HierarchyCTE.LEVEL
-";
+", cId, cParent, cName);
 
                     connection.Open();
 
@@ -194,11 +220,11 @@ ORDER BY HierarchyCTE.LEVEL
                         var node = new TreeNode(entity.Name)
                         {
                             Tag = entity.Id,
-                            Name = entity.Id?.ToString(CultureInfo.InvariantCulture) ?? string.Empty
+                            Name = entity.Id.HasValue ? entity.Id.Value.ToString(CultureInfo.InvariantCulture) : string.Empty
                         };
 
                         var parent = entity.Parent;
-                        var parentNode = (from treeNode in nodesCache let tag = (long?)treeNode?.Tag where tag == parent select treeNode).FirstOrDefault();
+                        var parentNode = (from treeNode in nodesCache let tag = treeNode == null ? null : (long?)treeNode.Tag where tag == parent select treeNode).FirstOrDefault();
                         if (parentNode == null)
                         {
                             nodes.Add(node);
@@ -215,7 +241,11 @@ ORDER BY HierarchyCTE.LEVEL
 
         public static void LoadContent(TreeView hierarchyTreeView, DataGridView recordsDataGridView)
         {
-            var selectedNode = hierarchyTreeView?.SelectedNode;
+            TreeNode selectedNode = null;
+            if (hierarchyTreeView != null )
+            {
+                selectedNode = hierarchyTreeView.SelectedNode;
+            }
             if (selectedNode != null)
             {
                 var hierarchyId = (long?)selectedNode.Tag;
@@ -231,7 +261,11 @@ ORDER BY HierarchyCTE.LEVEL
         public static ContentEntity SetContentByHierarchy(TreeView hierarchyTreeView)
         {
             ContentEntity contentRecord = null;
-            var selectedNode = hierarchyTreeView?.SelectedNode;
+            TreeNode selectedNode = null;
+            if (hierarchyTreeView != null)
+            {
+                selectedNode = hierarchyTreeView.SelectedNode;
+            }
             if (selectedNode != null)
             {
                 var hierarchyId = (long?)selectedNode.Tag;
@@ -259,7 +293,10 @@ ORDER BY HierarchyCTE.LEVEL
 
             if (isSetSuccess)
             {
-                form?.Close();
+                if (form != null )
+                {
+                    form.Close();
+                }
             }
             else
             {
@@ -269,15 +306,19 @@ ORDER BY HierarchyCTE.LEVEL
 
         public static HierarchyEntity SetHierarchyParentByTreeView(TreeView hierarchyTreeView)
         {
-            var selectedNode = hierarchyTreeView?.SelectedNode;
-            var hierarchyId = (long?)selectedNode?.Tag;
+            TreeNode selectedNode = null;
+            if (hierarchyTreeView != null)
+            {
+                selectedNode = hierarchyTreeView.SelectedNode;
+            }
+            var hierarchyId = selectedNode == null ? null : (long?)selectedNode.Tag;
 
             var entity = new HierarchyEntity { Parent = hierarchyId };
             return entity;
         }
         public static HierarchyEntity SetHierarchyEntityByTreeView(TreeView hierarchyTreeView)
         {
-            var selectedNode = hierarchyTreeView?.SelectedNode;
+            var selectedNode = hierarchyTreeView == null ? null : hierarchyTreeView.SelectedNode;
 
             long? hierarchyId = null;
             if (selectedNode != null)
@@ -307,22 +348,24 @@ ORDER BY HierarchyCTE.LEVEL
             var connectionString = GetInterfaceConnectionString();
 
             var isExistDependency = true;
-            if (entity?.Id != null)
+            if (entity != null )
             {
-                var entityIdObject = (object)entity.Id.Value.ToString(CultureInfo.InvariantCulture);
-                const string cNode = "@NODE";
-
-                if (!string.IsNullOrEmpty(connectionString) && entity.Id != null)
+                if (entity.Id.HasValue )
                 {
-                    using (var dependencyConnection = new SqlConnection(connectionString))
+                    var entityIdObject = (object)entity.Id.Value.ToString(CultureInfo.InvariantCulture);
+                    const string cNode = "@NODE";
+
+                    if (!string.IsNullOrEmpty(connectionString) && entity.Id != null)
                     {
-                        var getDependencyCommand = dependencyConnection.CreateCommand();
-                        getDependencyCommand.CommandText =
-                            $@"
+                        using (var dependencyConnection = new SqlConnection(connectionString))
+                        {
+                            var getDependencyCommand = dependencyConnection.CreateCommand();
+                            getDependencyCommand.CommandText = string.Format(
+@"
 WITH HierarchyCTE (Id, Name, Parent, LEVEL)
 AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 1
 FROM Hierarchy HRoot
-WHERE HRoot.Id = {cNode}
+WHERE HRoot.Id = {0}
 UNION ALL
 SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1 
 FROM Hierarchy HChild
@@ -331,39 +374,41 @@ WHERE HChild.Parent IS NOT NULL)
 SELECT 'yes' AS isExists WHERE  EXISTS ( SELECT null FROM HierarchyCTE
 LEFT JOIN [Content] C ON HierarchyCTE.Id = C.Hierarchy
 WHERE C.Id IS NOT NULL  )
-";
+", cNode);
 
-                        var nodeId = new SqlParameter(cNode, entityIdObject);
-                        getDependencyCommand.Parameters.Add(nodeId);
+                            var nodeId = new SqlParameter(cNode, entityIdObject);
+                            getDependencyCommand.Parameters.Add(nodeId);
 
-                        dependencyConnection.Open();
+                            dependencyConnection.Open();
 
-                        var rowAffected = getDependencyCommand.ExecuteScalar();
-                        isExistDependency = rowAffected != null;
+                            var rowAffected = getDependencyCommand.ExecuteScalar();
+                            isExistDependency = rowAffected != null;
+                        }
                     }
-                }
 
-                List<long?> listForDelete = null;
-                if (isExistDependency)
-                {
-                    MessageBox.Show(@"Error on delete");
-                }
-                else
-                {
-                    listForDelete = GetChild(connectionString, entity) ?? new List<long?>();
-                    listForDelete.Add(entity.Id.Value);
-                }
-
-                var isExistForDelete = listForDelete != null && listForDelete.Count > 0;
-                if (isExistForDelete)
-                {
-                    foreach (var id in listForDelete)
+                    List<long?> listForDelete = null;
+                    if (isExistDependency)
                     {
-                        var nextEntity = new Hierarchy { EntityInstance = { Id = id } };
-                        result = nextEntity.Delete();
+                        MessageBox.Show(@"Error on delete");
+                    }
+                    else
+                    {
+                        listForDelete = GetChild(connectionString, entity) ?? new List<long?>();
+                        listForDelete.Add(entity.Id.Value);
+                    }
+
+                    var isExistForDelete = listForDelete != null && listForDelete.Count > 0;
+                    if (isExistForDelete)
+                    {
+                        foreach (var id in listForDelete)
+                        {
+                            var nextEntity = new Hierarchy { EntityInstance = { Id = id } };
+                            result = nextEntity.Delete();
+                        }
                     }
                 }
             }
+
             return result;
         }
 
@@ -386,54 +431,57 @@ WHERE C.Id IS NOT NULL  )
         private static List<long?> GetChild(string connectionString, HierarchyEntity entity)
         {
             List<long?> child = null;
-            if (connectionString != null && entity?.Id != null)
+            if (entity != null )
             {
-                using (var performDeleteConnection = new SqlConnection(connectionString))
+                if (connectionString != null && entity.Id.HasValue )
                 {
-                    const string cNode = "@NODE";
-                    const string cId = "ID";
+                    using (var performDeleteConnection = new SqlConnection(connectionString))
+                    {
+                        const string cNode = "@NODE";
+                        const string cId = "ID";
 
-                    var entityIdObject = (object) entity.Id.Value.ToString(CultureInfo.InvariantCulture);
+                        var entityIdObject = (object)entity.Id.Value.ToString(CultureInfo.InvariantCulture);
 
-                    var getListCommand = performDeleteConnection.CreateCommand();
-                    getListCommand.CommandText =
-                        $@"
+                        var getListCommand = performDeleteConnection.CreateCommand();
+                        getListCommand.CommandText = string.Format(@"
 WITH HierarchyCTE (Id, Name, Parent, LEVEL)
 AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 1
 FROM Hierarchy HRoot
-WHERE HRoot.Id = {cNode}
+WHERE HRoot.Id = {0}
 UNION ALL
 SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1 
 FROM Hierarchy HChild
 INNER JOIN HierarchyCTE CTE ON HChild.Parent = CTE.Id
 WHERE HChild.Parent IS NOT NULL)
-SELECT DISTINCT HierarchyCTE.Id AS {cId}, HierarchyCTE.LEVEL
+SELECT DISTINCT HierarchyCTE.Id AS {1}, HierarchyCTE.LEVEL
 FROM HierarchyCTE
 LEFT JOIN [Content] C ON HierarchyCTE.Id = C.Hierarchy
 EXCEPT
 SELECT HRoot.Id, 1
 FROM Hierarchy HRoot
-WHERE HRoot.Id = {cNode}
+WHERE HRoot.Id = {2}
 ORDER BY LEVEL DESC
-";
+", cNode, cId, cNode);
 
-                    var nodeId = new SqlParameter(cNode, entityIdObject);
-                    getListCommand.Parameters.Add(nodeId);
+                        var nodeId = new SqlParameter(cNode, entityIdObject);
+                        getListCommand.Parameters.Add(nodeId);
 
-                    performDeleteConnection.Open();
+                        performDeleteConnection.Open();
 
-                    var reader = getListCommand.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        var recordId = (long?) reader[cId];
-                        if (child == null)
+                        var reader = getListCommand.ExecuteReader();
+                        while (reader.Read())
                         {
-                            child = new List<long?>();
+                            var recordId = (long?)reader[cId];
+                            if (child == null)
+                            {
+                                child = new List<long?>();
+                            }
+                            child.Add(recordId);
                         }
-                        child.Add(recordId);
                     }
                 }
             }
+
 
             return child;
         }
@@ -443,7 +491,7 @@ ORDER BY LEVEL DESC
             if (target != null && source != null)
             {
                 var targetId = target.Id;
-                bool isContainEntity = true;
+                var isContainEntity = true;
                 if (source.Id != targetId)
                 {
                     var connectionString = GetInterfaceConnectionString();

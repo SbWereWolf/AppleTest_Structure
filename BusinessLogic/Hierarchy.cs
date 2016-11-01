@@ -5,12 +5,17 @@ namespace BusinessLogic
 {
     public class Hierarchy
     {
-        private DataAccess.Hierarchy Handler { get; }
+        private DataAccess.Hierarchy Handler
+        {
+            get { return _handler; }
+        }
 
         public HierarchyEntity EntityInstance;
+        private readonly DataAccess.Hierarchy _handler;
+
         public Hierarchy()
         {
-            Handler = new DataAccess.Hierarchy();
+            _handler = new DataAccess.Hierarchy();
             EntityInstance = new HierarchyEntity();
         }
 
@@ -18,12 +23,16 @@ namespace BusinessLogic
         {
             List<HierarchyEntity> result = null;
             var handler = Handler;
-            if (handler?.Pattern != null)
+            if (handler != null )
+            {
+             if (handler.Pattern != null)
             {
                 handler.Pattern.Parent = parent;
                 handler.Pattern.Id = hierarchyId;
                 handler.Pattern.Name = name;
+            }               
             }
+
             List<HierarchyRecord> records = null;
             if ( handler!= null )
             {

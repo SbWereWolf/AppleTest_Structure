@@ -6,8 +6,19 @@ namespace MSSqlDataSource
 {
     public class HierarchyHandler : DataSource
     {
-        private Table<Hierarchy> DataSource { get; }
-        public NullableHierarchy SearchPattern { get; }
+        private readonly Table<Hierarchy> _dataSource;
+        private readonly NullableHierarchy _searchPattern;
+
+        private Table<Hierarchy> DataSource
+        {
+            get { return _dataSource; }
+        }
+
+        public NullableHierarchy SearchPattern
+        {
+            get { return _searchPattern; }
+        }
+
         public NullableHierarchy Fields { private get; set; }
 
         public HierarchyHandler()
@@ -15,9 +26,9 @@ namespace MSSqlDataSource
             var appleStructure = DbContext;
             if (appleStructure != null)
             {
-                DataSource = appleStructure.Hierarchies;
+                _dataSource = appleStructure.Hierarchies;
             }
-            SearchPattern = new NullableHierarchy();
+            _searchPattern = new NullableHierarchy();
             Fields = new NullableHierarchy();
         }
 
@@ -68,10 +79,14 @@ namespace MSSqlDataSource
             var fileds = Fields;
 
             Hierarchy record = null;
-            if (fileds?.Id != null)
+            if (fileds != null && DataSource != null )
             {
-                record = DataSource?.First(x => x.Id == fileds.Id.Value);
+             if (fileds.Id != null)
+            {
+                record = DataSource.First(x => x.Id == fileds.Id.Value);
+            }               
             }
+
 
             var perform = false;
             if (record != null)
@@ -86,9 +101,9 @@ namespace MSSqlDataSource
             }
 
             var isSuccess = false;
-            if (perform)
+            if (perform && DataSource.Context != null)
             {
-                DataSource.Context?.SubmitChanges();
+                DataSource.Context.SubmitChanges();
                 isSuccess = true;
             }
 
@@ -113,12 +128,16 @@ namespace MSSqlDataSource
 
             Hierarchy record = null;
             DataContext context = null;
-            if (fields?.Id != null
+            if (fields != null )
+            {
+             if (fields.Id != null
                 && DataSource!= null)
             {
                 record = DataSource.FirstOrDefault(x => x.Id == fields.Id.Value);
                 context = DataSource.Context;
+            }               
             }
+
             if (record != null && context != null )
             {
                 DataSource.DeleteOnSubmit(record);
@@ -149,15 +168,19 @@ namespace MSSqlDataSource
                 record.Id = fields.Id.Value;
             }
 
-            if (fields?.Parent != null && record != null)
+            if (fields != null )
+            {
+             if (fields.Parent != null && record != null)
             {
                 record.Parent = fields.Parent.Value;
+            }               
             }
 
-            if (record != null )
+
+            if (record != null && dataSource.Context != null )
             {
                 dataSource.InsertOnSubmit(record);
-                dataSource.Context?.SubmitChanges();
+                dataSource.Context.SubmitChanges();
             }
             var result = new NullableHierarchy(record);
 

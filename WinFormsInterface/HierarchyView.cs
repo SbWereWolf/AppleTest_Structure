@@ -6,11 +6,16 @@ namespace WinFormsInterface
 {
     public partial class HierarchyView : Form
     {
-        private HierarchyEntity HierarchyEntity { get; }
+        private readonly HierarchyEntity _hierarchyEntity;
+
+        private HierarchyEntity HierarchyEntity
+        {
+            get { return _hierarchyEntity; }
+        }
 
         public HierarchyView(HierarchyEntity hierarchyEntity)
         {
-            HierarchyEntity = hierarchyEntity;
+            _hierarchyEntity = hierarchyEntity;
             InitializeComponent();
         }
 
@@ -21,7 +26,12 @@ namespace WinFormsInterface
 
         private void ApplyToolStripButton_Click(object sender, EventArgs e)
         {
-            var name = NameTextBox?.Text;
+            var name = string.Empty;
+            if (NameTextBox != null )
+            {
+                 name = NameTextBox.Text;
+            }
+            
             var record = HierarchyEntity;
             
             InterfaceHandler.SaveHierarchyEntity(this, record, name);

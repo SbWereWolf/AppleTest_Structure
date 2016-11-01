@@ -31,7 +31,7 @@ namespace WinFormsInterface
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ContentBrowser));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(ContentBrowser));
             this.ContentToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.RecordsDataGridView = new System.Windows.Forms.DataGridView();
             this.ContentToolStrip = new System.Windows.Forms.ToolStrip();

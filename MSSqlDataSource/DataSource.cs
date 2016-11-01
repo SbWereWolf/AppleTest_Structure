@@ -2,11 +2,16 @@
 {
     public class DataSource 
     {
-        protected StructureDatabaseDataContext DbContext { get; }
+        private readonly StructureDatabaseDataContext _dbContext;
+
+        protected StructureDatabaseDataContext DbContext
+        {
+            get { return _dbContext; }
+        }
 
         protected DataSource()
         {
-            DbContext = new StructureDatabaseDataContext();
+            _dbContext = new StructureDatabaseDataContext();
         }
     }
 }
