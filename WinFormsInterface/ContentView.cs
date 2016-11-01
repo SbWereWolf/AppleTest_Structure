@@ -7,11 +7,11 @@ namespace WinFormsInterface
 {
     public partial class ContentView : Form
     {
-        private Content.Record Record { get; }
+        private ContentEntity ContentEntity { get; }
 
-        public ContentView(Content.Record record)
+        public ContentView(ContentEntity contentEntity)
         {
-            Record = record;
+            ContentEntity = contentEntity;
             InitializeComponent();
         }
 
@@ -24,23 +24,23 @@ namespace WinFormsInterface
         {
             var name = NameTextBox?.Text;
             var content = ContentTextBox?.Text;
-            var record = Record;
+            var record = ContentEntity;
             
-            InterfaceHandler.Save(this,content, record, name);
+            InterfaceHandler.SaveContetnEntity(this,content, record, name);
         }
 
         private void ContentView_Load(object sender, EventArgs e)
         {
-            if (Record != null)
+            if (ContentEntity != null)
             {
                 if (NameTextBox != null)
                 {
-                    NameTextBox.Text = Record.Name;
+                    NameTextBox.Text = ContentEntity.Name;
                 }
                 if (ContentTextBox != null
-                    && Record.ContentValue != null)
+                    && ContentEntity.ContentValue != null)
                 {
-                    ContentTextBox.Text = Record.ContentValue.Value.ToString(CultureInfo.InvariantCulture);
+                    ContentTextBox.Text = ContentEntity.ContentValue.Value.ToString(CultureInfo.InvariantCulture);
                 }
             }
         }

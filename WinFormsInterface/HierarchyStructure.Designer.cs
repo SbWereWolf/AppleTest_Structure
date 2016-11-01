@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace WinFormsInterface
 {
-    partial class ContentView
+    partial class HierarchyStructure
     {
         /// <summary>
         /// Required designer variable.
@@ -31,85 +31,44 @@ namespace WinFormsInterface
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ContentView));
-            this.BasisSplitContainer = new System.Windows.Forms.SplitContainer();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HierarchyStructure));
             this.NameGroupBox = new System.Windows.Forms.GroupBox();
-            this.NameTextBox = new System.Windows.Forms.TextBox();
-            this.ContentGroupBox = new System.Windows.Forms.GroupBox();
-            this.ContentTextBox = new System.Windows.Forms.TextBox();
+            this.HierarchyTreeView = new System.Windows.Forms.TreeView();
             this.CommandsToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.CommandsToolStrip = new System.Windows.Forms.ToolStrip();
-            this.ApplyToolStripLabel = new System.Windows.Forms.ToolStripLabel();
-            this.ApplyToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.SelectToolStripLabel = new System.Windows.Forms.ToolStripLabel();
+            this.SelectToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.CancelToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.CancelToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.BasisSplitContainer.Panel1.SuspendLayout();
-            this.BasisSplitContainer.Panel2.SuspendLayout();
-            this.BasisSplitContainer.SuspendLayout();
+            this.RefreshToolStripLabel = new System.Windows.Forms.ToolStripLabel();
+            this.RefreshToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.NameGroupBox.SuspendLayout();
-            this.ContentGroupBox.SuspendLayout();
             this.CommandsToolStripContainer.ContentPanel.SuspendLayout();
             this.CommandsToolStripContainer.TopToolStripPanel.SuspendLayout();
             this.CommandsToolStripContainer.SuspendLayout();
             this.CommandsToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // BasisSplitContainer
-            // 
-            this.BasisSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BasisSplitContainer.Location = new System.Drawing.Point(0, 0);
-            this.BasisSplitContainer.Name = "BasisSplitContainer";
-            this.BasisSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // BasisSplitContainer.Panel1
-            // 
-            this.BasisSplitContainer.Panel1.Controls.Add(this.NameGroupBox);
-            // 
-            // BasisSplitContainer.Panel2
-            // 
-            this.BasisSplitContainer.Panel2.Controls.Add(this.ContentGroupBox);
-            this.BasisSplitContainer.Size = new System.Drawing.Size(479, 196);
-            this.BasisSplitContainer.SplitterDistance = 94;
-            this.BasisSplitContainer.TabIndex = 0;
-            // 
             // NameGroupBox
             // 
-            this.NameGroupBox.Controls.Add(this.NameTextBox);
+            this.NameGroupBox.Controls.Add(this.HierarchyTreeView);
             this.NameGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NameGroupBox.Location = new System.Drawing.Point(0, 0);
             this.NameGroupBox.Name = "NameGroupBox";
-            this.NameGroupBox.Size = new System.Drawing.Size(479, 94);
+            this.NameGroupBox.Size = new System.Drawing.Size(377, 521);
             this.NameGroupBox.TabIndex = 0;
             this.NameGroupBox.TabStop = false;
-            this.NameGroupBox.Text = "Наименование";
+            this.NameGroupBox.Text = "Выберите каталог куда переместить";
             // 
-            // NameTextBox
+            // HierarchyTreeView
             // 
-            this.NameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NameTextBox.Location = new System.Drawing.Point(3, 18);
-            this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(473, 22);
-            this.NameTextBox.TabIndex = 0;
-            // 
-            // ContentGroupBox
-            // 
-            this.ContentGroupBox.Controls.Add(this.ContentTextBox);
-            this.ContentGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ContentGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.ContentGroupBox.Name = "ContentGroupBox";
-            this.ContentGroupBox.Size = new System.Drawing.Size(479, 98);
-            this.ContentGroupBox.TabIndex = 1;
-            this.ContentGroupBox.TabStop = false;
-            this.ContentGroupBox.Text = "Значение";
-            // 
-            // ContentTextBox
-            // 
-            this.ContentTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ContentTextBox.Location = new System.Drawing.Point(3, 18);
-            this.ContentTextBox.Name = "ContentTextBox";
-            this.ContentTextBox.Size = new System.Drawing.Size(473, 22);
-            this.ContentTextBox.TabIndex = 1;
+            this.HierarchyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HierarchyTreeView.Location = new System.Drawing.Point(3, 18);
+            this.HierarchyTreeView.Name = "HierarchyTreeView";
+            this.HierarchyTreeView.Size = new System.Drawing.Size(371, 500);
+            this.HierarchyTreeView.TabIndex = 0;
             // 
             // CommandsToolStripContainer
             // 
@@ -117,14 +76,14 @@ namespace WinFormsInterface
             // 
             // CommandsToolStripContainer.ContentPanel
             // 
-            this.CommandsToolStripContainer.ContentPanel.Controls.Add(this.BasisSplitContainer);
-            this.CommandsToolStripContainer.ContentPanel.Size = new System.Drawing.Size(479, 196);
+            this.CommandsToolStripContainer.ContentPanel.Controls.Add(this.NameGroupBox);
+            this.CommandsToolStripContainer.ContentPanel.Size = new System.Drawing.Size(377, 521);
             this.CommandsToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CommandsToolStripContainer.LeftToolStripPanelVisible = false;
             this.CommandsToolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.CommandsToolStripContainer.Name = "CommandsToolStripContainer";
             this.CommandsToolStripContainer.RightToolStripPanelVisible = false;
-            this.CommandsToolStripContainer.Size = new System.Drawing.Size(479, 223);
+            this.CommandsToolStripContainer.Size = new System.Drawing.Size(377, 548);
             this.CommandsToolStripContainer.TabIndex = 1;
             this.CommandsToolStripContainer.Text = "toolStripContainer1";
             // 
@@ -137,31 +96,39 @@ namespace WinFormsInterface
             this.CommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.CommandsToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.CommandsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ApplyToolStripLabel,
-            this.ApplyToolStripButton,
-            this.toolStripSeparator1,
+            this.SelectToolStripLabel,
+            this.SelectToolStripButton,
+            this.toolStripSeparator2,
             this.CancelToolStripLabel,
-            this.CancelToolStripButton});
+            this.CancelToolStripButton,
+            this.toolStripSeparator1,
+            this.RefreshToolStripLabel,
+            this.RefreshToolStripButton});
             this.CommandsToolStrip.Location = new System.Drawing.Point(3, 0);
             this.CommandsToolStrip.Name = "CommandsToolStrip";
-            this.CommandsToolStrip.Size = new System.Drawing.Size(206, 27);
+            this.CommandsToolStrip.Size = new System.Drawing.Size(256, 27);
             this.CommandsToolStrip.TabIndex = 0;
             // 
-            // ApplyToolStripLabel
+            // SelectToolStripLabel
             // 
-            this.ApplyToolStripLabel.Name = "ApplyToolStripLabel";
-            this.ApplyToolStripLabel.Size = new System.Drawing.Size(48, 24);
-            this.ApplyToolStripLabel.Text = "Apply";
+            this.SelectToolStripLabel.Name = "SelectToolStripLabel";
+            this.SelectToolStripLabel.Size = new System.Drawing.Size(49, 24);
+            this.SelectToolStripLabel.Text = "Select";
             // 
-            // ApplyToolStripButton
+            // SelectToolStripButton
             // 
-            this.ApplyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ApplyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("ApplyToolStripButton.Image")));
-            this.ApplyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ApplyToolStripButton.Name = "ApplyToolStripButton";
-            this.ApplyToolStripButton.Size = new System.Drawing.Size(24, 24);
-            this.ApplyToolStripButton.Text = "Apply";
-            this.ApplyToolStripButton.Click += new System.EventHandler(this.ApplyToolStripButton_Click);
+            this.SelectToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectToolStripButton.Image")));
+            this.SelectToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectToolStripButton.Name = "SelectToolStripButton";
+            this.SelectToolStripButton.Size = new System.Drawing.Size(24, 24);
+            this.SelectToolStripButton.Text = "Select";
+            this.SelectToolStripButton.Click += new System.EventHandler(this.SelectToolStripButton_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
             // 
             // CancelToolStripLabel
             // 
@@ -184,22 +151,32 @@ namespace WinFormsInterface
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
-            // ContentView
+            // RefreshToolStripLabel
+            // 
+            this.RefreshToolStripLabel.Name = "RefreshToolStripLabel";
+            this.RefreshToolStripLabel.Size = new System.Drawing.Size(58, 24);
+            this.RefreshToolStripLabel.Text = "Refresh";
+            // 
+            // RefreshToolStripButton
+            // 
+            this.RefreshToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RefreshToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshToolStripButton.Image")));
+            this.RefreshToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RefreshToolStripButton.Name = "RefreshToolStripButton";
+            this.RefreshToolStripButton.Size = new System.Drawing.Size(24, 24);
+            this.RefreshToolStripButton.Text = "Refresh";
+            this.RefreshToolStripButton.Click += new System.EventHandler(this.RefreshToolStripButton_Click);
+            // 
+            // HierarchyStructure
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(479, 223);
+            this.ClientSize = new System.Drawing.Size(377, 548);
             this.Controls.Add(this.CommandsToolStripContainer);
-            this.Name = "ContentView";
-            this.Text = "ContentView";
-            this.Load += new System.EventHandler(this.ContentView_Load);
-            this.BasisSplitContainer.Panel1.ResumeLayout(false);
-            this.BasisSplitContainer.Panel2.ResumeLayout(false);
-            this.BasisSplitContainer.ResumeLayout(false);
+            this.Name = "HierarchyStructure";
+            this.Text = "Выбор каталога";
+            this.Load += new System.EventHandler(this.HierarchyView_Load);
             this.NameGroupBox.ResumeLayout(false);
-            this.NameGroupBox.PerformLayout();
-            this.ContentGroupBox.ResumeLayout(false);
-            this.ContentGroupBox.PerformLayout();
             this.CommandsToolStripContainer.ContentPanel.ResumeLayout(false);
             this.CommandsToolStripContainer.TopToolStripPanel.ResumeLayout(false);
             this.CommandsToolStripContainer.TopToolStripPanel.PerformLayout();
@@ -212,17 +189,17 @@ namespace WinFormsInterface
         }
 
         #endregion
-        private SplitContainer BasisSplitContainer;
         private GroupBox NameGroupBox;
-        private TextBox NameTextBox;
-        private GroupBox ContentGroupBox;
-        private TextBox ContentTextBox;
         private ToolStripContainer CommandsToolStripContainer;
         private ToolStrip CommandsToolStrip;
-        private ToolStripLabel ApplyToolStripLabel;
-        private ToolStripButton ApplyToolStripButton;
+        private ToolStripLabel SelectToolStripLabel;
+        private ToolStripButton SelectToolStripButton;
         private ToolStripLabel CancelToolStripLabel;
         private ToolStripButton CancelToolStripButton;
+        private TreeView HierarchyTreeView;
+        private ToolStripLabel RefreshToolStripLabel;
+        private ToolStripButton RefreshToolStripButton;
+        private ToolStripSeparator toolStripSeparator2;
         private ToolStripSeparator toolStripSeparator1;
     }
 }

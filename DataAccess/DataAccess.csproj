@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentRecord.cs" />
+    <Compile Include="Hierarchy.cs" />
     <Compile Include="Content.cs" />
+    <Compile Include="HierarchyRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
