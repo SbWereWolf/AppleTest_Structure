@@ -6,8 +6,19 @@ namespace MSSqlDataSource
 {
     public class ContentHandler : DataSource
     {
-        private Table<Content> DataSource { get; }
-        public NullableContent SearchPattern { get; }
+        private readonly Table<Content> _dataSource;
+        private readonly NullableContent _searchPattern;
+
+        private Table<Content> DataSource
+        {
+            get { return _dataSource; }
+        }
+
+        public NullableContent SearchPattern
+        {
+            get { return _searchPattern; }
+        }
+
         public NullableContent Fields { private get; set; }
 
         public ContentHandler()
@@ -15,9 +26,9 @@ namespace MSSqlDataSource
             var appleStructure = DbContext;
             if (appleStructure != null)
             {
-                DataSource = appleStructure.Contents;
+                _dataSource = appleStructure.Contents;
             }
-            SearchPattern = new NullableContent();
+            _searchPattern = new NullableContent();
             Fields = new NullableContent();
         }
 
@@ -73,9 +84,12 @@ namespace MSSqlDataSource
             var fileds = Fields;
 
             Content record = null;
-            if (fileds?.Id != null)
+            if (fileds != null)
             {
-                record = DataSource?.First(x => x.Id == fileds.Id.Value);
+                if (fileds.Id != null && DataSource!= null )
+                {
+                    record = DataSource.First(x => x.Id == fileds.Id.Value);
+                }
             }
 
             var perform = false;
@@ -92,9 +106,9 @@ namespace MSSqlDataSource
             }
 
             var isSuccess = false;
-            if (perform)
+            if (perform && DataSource.Context != null )
             {
-                DataSource.Context?.SubmitChanges();
+                DataSource.Context.SubmitChanges();
                 isSuccess = true;
             }
 
@@ -120,12 +134,16 @@ namespace MSSqlDataSource
 
             Content record = null;
             DataContext context = null;
-            if (fields?.Id != null
-                && DataSource!= null)
+            if (fields != null )
             {
-                record = DataSource.First(x => x.Id == fields.Id.Value);
-                context = DataSource.Context;
+                if (fields.Id != null
+                    && DataSource != null)
+                {
+                    record = DataSource.First(x => x.Id == fields.Id.Value);
+                    context = DataSource.Context;
+                }
             }
+
             if (record != null && context != null )
             {
                 DataSource.DeleteOnSubmit(record);
@@ -157,16 +175,24 @@ namespace MSSqlDataSource
                 record.Id = fields.Id.Value;
             }
 
-            if (fields?.HierachyId != null && record != null)
+            if (fields != null )
             {
-                record.Hierarchy = fields.HierachyId.Value;
+                if (fields.HierachyId != null && record != null)
+                {
+                    record.Hierarchy = fields.HierachyId.Value;
+                }
             }
 
-            if (record != null )
+            if (dataSource != null)
             {
-                dataSource.InsertOnSubmit(record);
-                dataSource.Context?.SubmitChanges();
+                if (dataSource.Context != null && record != null) 
+                {
+                    dataSource.InsertOnSubmit(record);
+                    dataSource.Context.SubmitChanges();
+                }
             }
+
+
             var result = new NullableContent(record);
 
             return result;

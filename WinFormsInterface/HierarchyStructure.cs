@@ -6,11 +6,16 @@ namespace WinFormsInterface
 {
     public partial class HierarchyStructure : Form
     {
-        private HierarchyEntity HierarchyEntity { get; }
+        private readonly HierarchyEntity _hierarchyEntity;
+
+        private HierarchyEntity HierarchyEntity
+        {
+            get { return _hierarchyEntity; }
+        }
 
         public HierarchyStructure(HierarchyEntity hierarchyEntity)
         {
-            HierarchyEntity = hierarchyEntity;
+            _hierarchyEntity = hierarchyEntity;
             InitializeComponent();
         }
 

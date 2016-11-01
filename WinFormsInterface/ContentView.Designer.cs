@@ -31,7 +31,7 @@ namespace WinFormsInterface
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ContentView));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(ContentView));
             this.BasisSplitContainer = new System.Windows.Forms.SplitContainer();
             this.NameGroupBox = new System.Windows.Forms.GroupBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();

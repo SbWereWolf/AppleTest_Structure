@@ -5,12 +5,17 @@ namespace BusinessLogic
 {
     public class Content
     {
-        private DataAccess.Content Handler { get; }
+        private DataAccess.Content Handler
+        {
+            get { return _handler; }
+        }
 
         public ContentEntity EntityInstance;
+        private readonly DataAccess.Content _handler;
+
         public Content()
         {
-            Handler = new DataAccess.Content();
+            _handler = new DataAccess.Content();
             EntityInstance = new ContentEntity();
         }
 
@@ -18,13 +23,17 @@ namespace BusinessLogic
         {
             List<ContentEntity> result = null;
             var handler = Handler;
-            if (handler?.Pattern != null)
+            if (handler != null)
+            {
+             if (handler.Pattern != null)
             {
                 handler.Pattern.ContentValue = content;
                 handler.Pattern.HierachyId = hierachyId;
                 handler.Pattern.Id = contentId;
                 handler.Pattern.Name = name;
+            }               
             }
+
             List<ContentRecord> records = null;
             if ( handler!= null )
             {

@@ -5,14 +5,24 @@ namespace DataAccess
 {
     public class Hierarchy
     {
-        public HierarchyRecord Record { get; }
-        public HierarchyRecord Pattern { get; }
+        public HierarchyRecord Record
+        {
+            get { return _record; }
+        }
+
+        public HierarchyRecord Pattern
+        {
+            get { return _pattern; }
+        }
+
         private readonly HierarchyHandler _handler;
+        private readonly HierarchyRecord _pattern;
+        private readonly HierarchyRecord _record;
 
         public Hierarchy()
         {
-            Record = new HierarchyRecord();
-            Pattern = new HierarchyRecord();
+            _record = new HierarchyRecord();
+            _pattern = new HierarchyRecord();
             _handler = new HierarchyHandler();
         }
 

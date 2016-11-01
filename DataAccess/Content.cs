@@ -5,16 +5,24 @@ namespace DataAccess
 {
     public class Content
     {
-        
+        public ContentRecord Record
+        {
+            get { return _record; }
+        }
 
-        public ContentRecord Record { get; }
-        public ContentRecord Pattern { get; }
+        public ContentRecord Pattern
+        {
+            get { return _pattern; }
+        }
+
         private readonly ContentHandler _handler;
+        private readonly ContentRecord _pattern;
+        private readonly ContentRecord _record;
 
         public Content()
         {
-            Record = new ContentRecord();
-            Pattern = new ContentRecord();
+            _record = new ContentRecord();
+            _pattern = new ContentRecord();
             _handler = new ContentHandler();
         }
 
