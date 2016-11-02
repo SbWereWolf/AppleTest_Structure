@@ -7,11 +7,16 @@ namespace WinFormsInterface
 {
     public partial class ContentView : Form
     {
-        private Content.Record Record { get; }
+        private readonly ContentEntity _contentEntity;
 
-        public ContentView(Content.Record record)
+        private ContentEntity ContentEntity
         {
-            Record = record;
+            get { return _contentEntity; }
+        }
+
+        public ContentView(ContentEntity contentEntity)
+        {
+            _contentEntity = contentEntity;
             InitializeComponent();
         }
 
@@ -22,25 +27,34 @@ namespace WinFormsInterface
 
         private void ApplyToolStripButton_Click(object sender, EventArgs e)
         {
-            var name = NameTextBox?.Text;
-            var content = ContentTextBox?.Text;
-            var record = Record;
+            var name = string.Empty;
+            var content = string.Empty;
+
+            if (NameTextBox != null)
+            {
+                name = NameTextBox.Text;
+            }
+            if (ContentTextBox != null)
+            {
+                content = ContentTextBox.Text;
+            }
+            var record = ContentEntity;
             
-            InterfaceHandler.Save(this,content, record, name);
+            InterfaceHandler.SaveContetnEntity(this,content, record, name);
         }
 
         private void ContentView_Load(object sender, EventArgs e)
         {
-            if (Record != null)
+            if (ContentEntity != null)
             {
                 if (NameTextBox != null)
                 {
-                    NameTextBox.Text = Record.Name;
+                    NameTextBox.Text = ContentEntity.Name;
                 }
                 if (ContentTextBox != null
-                    && Record.ContentValue != null)
+                    && ContentEntity.ContentValue != null)
                 {
-                    ContentTextBox.Text = Record.ContentValue.Value.ToString(CultureInfo.InvariantCulture);
+                    ContentTextBox.Text = ContentEntity.ContentValue.Value.ToString(CultureInfo.InvariantCulture);
                 }
             }
         }

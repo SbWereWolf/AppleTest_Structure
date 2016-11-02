@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -67,6 +69,18 @@
     <Compile Include="ContentBrowser.Designer.cs">
       <DependentUpon>ContentBrowser.cs</DependentUpon>
     </Compile>
+    <Compile Include="HierarchyStructure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HierarchyStructure.Designer.cs">
+      <DependentUpon>HierarchyStructure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HierarchyView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HierarchyView.Designer.cs">
+      <DependentUpon>HierarchyView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ContentView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +92,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ContentBrowser.resx">
       <DependentUpon>ContentBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HierarchyStructure.resx">
+      <DependentUpon>HierarchyStructure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HierarchyView.resx">
+      <DependentUpon>HierarchyView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ContentView.resx">
       <DependentUpon>ContentView.cs</DependentUpon>

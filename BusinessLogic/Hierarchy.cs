@@ -3,38 +3,37 @@ using DataAccess;
 
 namespace BusinessLogic
 {
-    public class Content
+    public class Hierarchy
     {
-        private DataAccess.Content Handler
+        private DataAccess.Hierarchy Handler
         {
             get { return _handler; }
         }
 
-        public ContentEntity EntityInstance;
-        private readonly DataAccess.Content _handler;
+        public HierarchyEntity EntityInstance;
+        private readonly DataAccess.Hierarchy _handler;
 
-        public Content()
+        public Hierarchy()
         {
-            _handler = new DataAccess.Content();
-            EntityInstance = new ContentEntity();
+            _handler = new DataAccess.Hierarchy();
+            EntityInstance = new HierarchyEntity();
         }
 
-        public List<ContentEntity> Get(long? contentId = null , long? hierachyId = null, string name = null, float? content = null)
+        public List<HierarchyEntity> Get(long? hierarchyId = null , long? parent = null, string name = null)
         {
-            List<ContentEntity> result = null;
+            List<HierarchyEntity> result = null;
             var handler = Handler;
-            if (handler != null)
+            if (handler != null )
             {
              if (handler.Pattern != null)
             {
-                handler.Pattern.ContentValue = content;
-                handler.Pattern.HierachyId = hierachyId;
-                handler.Pattern.Id = contentId;
+                handler.Pattern.Parent = parent;
+                handler.Pattern.Id = hierarchyId;
                 handler.Pattern.Name = name;
             }               
             }
 
-            List<ContentRecord> records = null;
+            List<HierarchyRecord> records = null;
             if ( handler!= null )
             {
                 records = handler.Get();
@@ -45,16 +44,10 @@ namespace BusinessLogic
                 {
                     if (record!= null)
                     {
-                        var resultRecord = new ContentEntity
-                        {
-                            ContentValue = record.ContentValue,
-                            HierachyId = record.HierachyId,
-                            Id = record.Id,
-                            Name = record.Name
-                        };
+                        var resultRecord = new HierarchyEntity(record);
                         if (result == null )
                         {
-                            result = new List<ContentEntity>();
+                            result = new List<HierarchyEntity>();
                         }
                         result.Add(resultRecord);
                     }
@@ -64,10 +57,10 @@ namespace BusinessLogic
             return result;
         }
 
-        public ContentEntity Set()
+        public HierarchyEntity Set()
         {
-            ContentEntity result = null ;
-            ContentRecord saveResult = null ;
+            HierarchyEntity result = null ;
+            HierarchyRecord saveResult = null ;
             var handler = GetHandler();
             if (handler != null)
             {
@@ -75,24 +68,23 @@ namespace BusinessLogic
             }
             if (saveResult != null )
             {
-                result = new ContentEntity(saveResult);
+                result = new HierarchyEntity(saveResult);
             }
 
             return result;
         }
 
-        private DataAccess.Content GetHandler()
+        private DataAccess.Hierarchy GetHandler()
         {
-            DataAccess.Content handler = null;
+            DataAccess.Hierarchy handler = null;
             var record = EntityInstance;
             if (record != null)
             {
-                handler = new DataAccess.Content
+                handler = new DataAccess.Hierarchy
                 {
                     Record =
                     {
-                        HierachyId = record.HierachyId,
-                        ContentValue = record.ContentValue,
+                        Parent = record.Parent,
                         Id = record.Id,
                         Name = record.Name
                     }

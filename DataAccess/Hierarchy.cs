@@ -3,44 +3,43 @@ using MSSqlDataSource;
 
 namespace DataAccess
 {
-    public class Content
+    public class Hierarchy
     {
-        public ContentRecord Record
+        public HierarchyRecord Record
         {
             get { return _record; }
         }
 
-        public ContentRecord Pattern
+        public HierarchyRecord Pattern
         {
             get { return _pattern; }
         }
 
-        private readonly ContentHandler _handler;
-        private readonly ContentRecord _pattern;
-        private readonly ContentRecord _record;
+        private readonly HierarchyHandler _handler;
+        private readonly HierarchyRecord _pattern;
+        private readonly HierarchyRecord _record;
 
-        public Content()
+        public Hierarchy()
         {
-            _record = new ContentRecord();
-            _pattern = new ContentRecord();
-            _handler = new ContentHandler();
+            _record = new HierarchyRecord();
+            _pattern = new HierarchyRecord();
+            _handler = new HierarchyHandler();
         }
 
         
-        public List<ContentRecord> Get()
+        public List<HierarchyRecord> Get()
         {
-            List<ContentRecord> result = null;
+            List<HierarchyRecord> result = null;
 
             var handler = _handler;
-            List<NullableContent> records = null;
+            List<NullableHierarchy> records = null;
             if (handler!= null )
             {
                 if (handler.SearchPattern != null && Pattern != null)
                 {
-                    handler.SearchPattern.HierachyId = Pattern.HierachyId;
+                    handler.SearchPattern.Parent = Pattern.Parent;
                     handler.SearchPattern.Id = Pattern.Id;
                     handler.SearchPattern.Name = Pattern.Name;
-                    handler.SearchPattern.ContentValue = Pattern.ContentValue;
                 }
 
                 records = handler.Get();
@@ -51,16 +50,15 @@ namespace DataAccess
                 {
                     if (record!=null)
                     {
-                        var resultRecord = new ContentRecord
+                        var resultRecord = new HierarchyRecord
                         {
-                            ContentValue = record.ContentValue,
-                            HierachyId = record.HierachyId,
+                            Parent = record.Parent,
                             Id = record.Id,
                             Name = record.Name
                         };
                         if (result == null)
                         {
-                            result = new List<ContentRecord>();
+                            result = new List<HierarchyRecord>();
                         }
                         result.Add(resultRecord);
                     }
@@ -86,13 +84,13 @@ namespace DataAccess
             return result;
         }
 
-        public ContentRecord Save()
+        public HierarchyRecord Save()
         {
             
             var handler = _handler;
             var record = Record;
 
-            ContentRecord result = null;
+            HierarchyRecord result = null;
             if (record != null 
                 && handler != null )
             {
@@ -103,7 +101,7 @@ namespace DataAccess
                 
                 if (saveResult != null )
                 {
-                    result = new ContentRecord(saveResult);
+                    result = new HierarchyRecord(saveResult);
                 }
             }
 
