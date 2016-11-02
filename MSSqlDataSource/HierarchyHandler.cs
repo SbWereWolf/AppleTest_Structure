@@ -79,14 +79,13 @@ namespace MSSqlDataSource
             var fileds = Fields;
 
             Hierarchy record = null;
-            if (fileds != null && DataSource != null )
+            if (fileds != null && DataSource != null)
             {
-             if (fileds.Id != null)
-            {
-                record = DataSource.First(x => x.Id == fileds.Id.Value);
-            }               
+                if (fileds.Id != null)
+                {
+                    record = DataSource.First(x => x.Id == fileds.Id.Value);
+                }
             }
-
 
             var perform = false;
             if (record != null)
@@ -128,14 +127,14 @@ namespace MSSqlDataSource
 
             Hierarchy record = null;
             DataContext context = null;
-            if (fields != null )
+            if (fields != null)
             {
-             if (fields.Id != null
-                && DataSource!= null)
-            {
-                record = DataSource.FirstOrDefault(x => x.Id == fields.Id.Value);
-                context = DataSource.Context;
-            }               
+                if (fields.Id != null
+                    && DataSource != null)
+                {
+                    record = DataSource.FirstOrDefault(x => x.Id == fields.Id.Value);
+                    context = DataSource.Context;
+                }
             }
 
             if (record != null && context != null )
@@ -168,12 +167,12 @@ namespace MSSqlDataSource
                 record.Id = fields.Id.Value;
             }
 
-            if (fields != null )
+            if (fields != null)
             {
-             if (fields.Parent != null && record != null)
-            {
-                record.Parent = fields.Parent.Value;
-            }               
+                if (fields.Parent != null && record != null)
+                {
+                    record.Parent = fields.Parent.Value;
+                }
             }
 
 

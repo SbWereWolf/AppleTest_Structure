@@ -71,9 +71,7 @@ namespace WinFormsInterface
 
         private void DeleteHierarchyToolStripButton_Click(object sender, EventArgs e)
         {
-            // ReSharper disable UnusedVariable
-            var result = InterfaceHandler.DeleteHierarchy(HierarchyTreeView);
-            // ReSharper restore UnusedVariable
+            InterfaceHandler.DeleteHierarchy(HierarchyTreeView);
         }
 
         private void MoveToolStripButton_Click(object sender, EventArgs e)

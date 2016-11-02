@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
@@ -11,17 +10,6 @@ namespace WinFormsInterface
 {
     internal static class InterfaceHandler
     {
-        //public static void RefreshList(DataGridView recordsDataGridView)
-        //{
-        //    var businessLogic = new Content();
-        //    var records = businessLogic.Get();
-
-        //    if (recordsDataGridView != null)
-        //    {
-        //        recordsDataGridView.DataSource = records;
-        //    }
-        //}
-
         public static void SaveContetnEntity(Form form, string content, ContentEntity contentEntity, string name)
         {
             float contentConverted;
@@ -161,51 +149,7 @@ namespace WinFormsInterface
 
         public static void RefreshTree(TreeView hierarchyTreeView)
         {
-            List<HierarchyEntity> records = null;
-            var connectionString = GetInterfaceConnectionString();
-            if (!string.IsNullOrEmpty(connectionString) )
-            {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    const string cId = "ID";
-                    const string cParent = "PARENT";
-                    const string cName = "NAME";
-                    var getHierarchyStructure = connection.CreateCommand();
-                    getHierarchyStructure.CommandText =string.Format(@"
-WITH HierarchyCTE (Id, Name, Parent, LEVEL)
-AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 0
-FROM Hierarchy HRoot
-WHERE HRoot.Parent IS NULL
-UNION ALL
-SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1 
-FROM Hierarchy HChild
-INNER JOIN HierarchyCTE CTE ON HChild.Parent = CTE.Id
-WHERE HChild.Parent IS NOT NULL)
-SELECT HierarchyCTE.Id AS {0}, HierarchyCTE.Parent AS {1} , HierarchyCTE.Name AS {2} 
-FROM HierarchyCTE
-ORDER BY HierarchyCTE.LEVEL
-", cId, cParent, cName);
-
-                    connection.Open();
-
-                    var reader = getHierarchyStructure.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        var entity = new HierarchyEntity
-                        {
-                            Id = (long?) (reader[cId] == DBNull.Value ? null : reader[cId] ),
-                            Name = (string) reader[cName],
-                            Parent = (long?) (reader[cParent] == DBNull.Value ? null : reader[cParent] )
-                        };
-                        
-                        if (records == null)
-                        {
-                            records = new List<HierarchyEntity>();
-                        }
-                        records.Add(entity);
-                    }
-                }
-            }
+            var records = Hierarchy.GetAllHierarchies();
 
             if (hierarchyTreeView != null && records != null )
             {
@@ -238,6 +182,7 @@ ORDER BY HierarchyCTE.LEVEL
                 }
             }
         }
+
 
         public static void LoadContent(TreeView hierarchyTreeView, DataGridView recordsDataGridView)
         {
@@ -339,184 +284,33 @@ ORDER BY HierarchyCTE.LEVEL
             
             return entity;
         }
-        public static bool DeleteHierarchy(TreeView hierarchyTreeView)
+        public static void DeleteHierarchy(TreeView hierarchyTreeView)
         {
-            var result = false;
-
             var entity = SetHierarchyEntityByTreeView(hierarchyTreeView);
 
-            var connectionString = GetInterfaceConnectionString();
-
-            var isExistDependency = true;
-            if (entity != null )
+            var businessLogic = new Hierarchy { EntityInstance = entity };
+            var isDeleteSuccess = businessLogic.DeleteBranch();
+            if (!isDeleteSuccess)
             {
-                if (entity.Id.HasValue )
-                {
-                    var entityIdObject = (object)entity.Id.Value.ToString(CultureInfo.InvariantCulture);
-                    const string cNode = "@NODE";
-
-                    if (!string.IsNullOrEmpty(connectionString) && entity.Id != null)
-                    {
-                        using (var dependencyConnection = new SqlConnection(connectionString))
-                        {
-                            var getDependencyCommand = dependencyConnection.CreateCommand();
-                            getDependencyCommand.CommandText = string.Format(
-@"
-WITH HierarchyCTE (Id, Name, Parent, LEVEL)
-AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 1
-FROM Hierarchy HRoot
-WHERE HRoot.Id = {0}
-UNION ALL
-SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1 
-FROM Hierarchy HChild
-INNER JOIN HierarchyCTE CTE ON HChild.Parent = CTE.Id
-WHERE HChild.Parent IS NOT NULL)
-SELECT 'yes' AS isExists WHERE  EXISTS ( SELECT null FROM HierarchyCTE
-LEFT JOIN [Content] C ON HierarchyCTE.Id = C.Hierarchy
-WHERE C.Id IS NOT NULL  )
-", cNode);
-
-                            var nodeId = new SqlParameter(cNode, entityIdObject);
-                            getDependencyCommand.Parameters.Add(nodeId);
-
-                            dependencyConnection.Open();
-
-                            var rowAffected = getDependencyCommand.ExecuteScalar();
-                            isExistDependency = rowAffected != null;
-                        }
-                    }
-
-                    List<long?> listForDelete = null;
-                    if (isExistDependency)
-                    {
-                        MessageBox.Show(@"Error on delete");
-                    }
-                    else
-                    {
-                        listForDelete = GetChild(connectionString, entity) ?? new List<long?>();
-                        listForDelete.Add(entity.Id.Value);
-                    }
-
-                    var isExistForDelete = listForDelete != null && listForDelete.Count > 0;
-                    if (isExistForDelete)
-                    {
-                        foreach (var id in listForDelete)
-                        {
-                            var nextEntity = new Hierarchy { EntityInstance = { Id = id } };
-                            result = nextEntity.Delete();
-                        }
-                    }
-                }
+                MessageBox.Show(@"Error on delete");
             }
-
-            return result;
         }
 
-        private static string GetInterfaceConnectionString()
-        {
-            var connectionString = string.Empty;
-            if (ConfigurationManager.ConnectionStrings != null)
-            {
-                var connectionStringSettings =
-                    ConfigurationManager.ConnectionStrings["AppleStructureConnectionString"];
-                if (connectionStringSettings !=
-                    null)
-                {
-                    connectionString = connectionStringSettings.ConnectionString;
-                }
-            }
-            return connectionString;
-        }
-
-        private static List<long?> GetChild(string connectionString, HierarchyEntity entity)
-        {
-            List<long?> child = null;
-            if (entity != null )
-            {
-                if (connectionString != null && entity.Id.HasValue )
-                {
-                    using (var performDeleteConnection = new SqlConnection(connectionString))
-                    {
-                        const string cNode = "@NODE";
-                        const string cId = "ID";
-
-                        var entityIdObject = (object)entity.Id.Value.ToString(CultureInfo.InvariantCulture);
-
-                        var getListCommand = performDeleteConnection.CreateCommand();
-                        getListCommand.CommandText = string.Format(@"
-WITH HierarchyCTE (Id, Name, Parent, LEVEL)
-AS (SELECT HRoot.Id, HRoot.Name, HRoot.Parent, 1
-FROM Hierarchy HRoot
-WHERE HRoot.Id = {0}
-UNION ALL
-SELECT HChild.Id, HChild.Name, HChild.Parent, CTE.LEVEL + 1 
-FROM Hierarchy HChild
-INNER JOIN HierarchyCTE CTE ON HChild.Parent = CTE.Id
-WHERE HChild.Parent IS NOT NULL)
-SELECT DISTINCT HierarchyCTE.Id AS {1}, HierarchyCTE.LEVEL
-FROM HierarchyCTE
-LEFT JOIN [Content] C ON HierarchyCTE.Id = C.Hierarchy
-EXCEPT
-SELECT HRoot.Id, 1
-FROM Hierarchy HRoot
-WHERE HRoot.Id = {2}
-ORDER BY LEVEL DESC
-", cNode, cId, cNode);
-
-                        var nodeId = new SqlParameter(cNode, entityIdObject);
-                        getListCommand.Parameters.Add(nodeId);
-
-                        performDeleteConnection.Open();
-
-                        var reader = getListCommand.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            var recordId = (long?)reader[cId];
-                            if (child == null)
-                            {
-                                child = new List<long?>();
-                            }
-                            child.Add(recordId);
-                        }
-                    }
-                }
-            }
-
-
-            return child;
-        }
         public static void MoveHierarchy(Form form , HierarchyEntity source, TreeView hierarchyTreeView)
         {
             var target = SetHierarchyEntityByTreeView(hierarchyTreeView);
-            if (target != null && source != null)
+            var businessLogic = new Hierarchy { EntityInstance = source };
+            var isSuccess = businessLogic.Move(source, target);
+            if (isSuccess)
             {
-                var targetId = target.Id;
-                var isContainEntity = true;
-                if (source.Id != targetId)
+                if (form != null)
                 {
-                    var connectionString = GetInterfaceConnectionString();
-                    var childList = GetChild(connectionString, source);
-                    if (childList != null)
-                    {
-                        isContainEntity = childList.Any
-                            // ReSharper disable SimplifyConditionalTernaryExpression
-                            (x => x.HasValue ? x.Value == targetId : false);
-                        // ReSharper restore SimplifyConditionalTernaryExpression
-                    }
-                    else
-                    {
-                        isContainEntity = false;
-                    }
+                    form.Close();
                 }
-                if (!isContainEntity)
-                {
-                    source.Parent = targetId;
-                    SaveHierarchyEntity(form, source, source.Name);
-                }
-                else
-                {
-                    MessageBox.Show(@"Error on move");
-                }
+            }
+            else
+            {
+                MessageBox.Show(@"Error on move");
             }
         }
     }
