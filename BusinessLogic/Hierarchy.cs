@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DataAccess;
 
 namespace BusinessLogic
@@ -103,6 +104,90 @@ namespace BusinessLogic
                 result = handler.Delete();
             }
 
+            return result;
+        }
+
+        public static List<HierarchyEntity> GetAllHierarchies()
+        {
+            var result = HierarchyEntity.GetAllHierarchies();
+            return result;
+        }
+
+        public List<HierarchyEntity> GetEntityChild()
+        {
+            HierarchyEntity entity = EntityInstance;
+            List<HierarchyEntity> result = null;
+            if (entity != null)
+            {
+                result = entity.GetChild();
+            }
+            return result;
+        }
+
+        public  bool Move(HierarchyEntity source, HierarchyEntity target)
+        {
+            var result = false;
+            if (target != null && source != null)
+            {
+                var targetId = target.Id;
+                var isSourceContainTarget = true;
+                if (source.Id != targetId)
+                {
+                    var childList = GetEntityChild();
+                    if (childList != null)
+                    {
+                        isSourceContainTarget = childList.Where(x=> x != null ).Any
+                            // ReSharper disable SimplifyConditionalTernaryExpression
+                            (x => x.Id.HasValue ? (x.Id.Value == targetId) : false);
+                        // ReSharper restore SimplifyConditionalTernaryExpression
+                    }
+                    else
+                    {
+                        isSourceContainTarget = false;
+                    }
+                }
+                if (!isSourceContainTarget)
+                {
+                    source.Parent = targetId;
+                    source = Set();
+
+                    if (source != null)
+                    {
+                        result = source.Id.HasValue;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public bool DeleteBranch()
+        {
+            var result = false;
+            if (EntityInstance != null)
+            {
+                if (EntityInstance.Id.HasValue)
+                {
+                    var hasDependency = EntityInstance.IsExistsDependency();
+
+                    List<HierarchyEntity> entitesForDelete = null;
+                    if (!hasDependency)
+                    {
+                        entitesForDelete = GetEntityChild() ?? new List<HierarchyEntity>();
+                        entitesForDelete.Add(EntityInstance);
+                    }
+
+                    var isExistForDelete = entitesForDelete != null;
+                    if (isExistForDelete && entitesForDelete.Count > 0)
+                    {
+                        result = true;
+                        foreach (var hierarchyEntity in entitesForDelete)
+                        {
+                            var nextEntity = new Hierarchy { EntityInstance = hierarchyEntity };
+                            result = result && nextEntity.Delete();
+                        }
+                    }
+                }
+            }
             return result;
         }
     }
